@@ -32,5 +32,5 @@ jobs:
     - name: Deploy to Azure Web App
       uses: azure/webapps-deploy@v2
       with:
-        app-name: 'your-api-app-name'  # Replace with your actual API app name
+        app-name: 'napnap'  # Replace with your actual API app name
         package: ./backend  # Specify just the backend folder
