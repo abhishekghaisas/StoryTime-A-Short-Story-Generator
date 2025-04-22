@@ -27,7 +27,7 @@ app = FastAPI(
 # Add CORS middleware to allow cross-origin requests
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["https://jolly-bay-016e3200f.6.azurestaticapps.net"],  # In production, replace with specific origins
+    allow_origins=["https://jolly-bay-016e3200f.6.azurestaticapps.net", "http://localhost:3000"],  # In production, replace with specific origins
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
