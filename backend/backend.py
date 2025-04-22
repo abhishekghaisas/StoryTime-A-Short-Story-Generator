@@ -142,7 +142,7 @@ def get_generator():
     """Get or initialize the story generator."""
     global _generator
     if _generator is None:
-        model_path = os.environ.get("MODEL_PATH", "/Users/abhishek/Desktop/Projects/StoryTime-A-Short-Story-Generator/tinyllama_1500stories_model/adapter_model.safetensors")
+        model_path = os.environ.get("MODEL_PATH", "/home/site/wwwroot/backend/model")
         logger.info(f"Initializing StoryGenerator with model path: {model_path}")
         _generator = StoryGenerator(model_path)
 
