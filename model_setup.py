@@ -4,7 +4,7 @@ from azure.identity import DefaultAzureCredential
 from azure.storage.blob import BlobServiceClient
 
 def download_model_files():
-    storage_account_name = "storygeneratorfiles"
+    storage_account_name = "napnap"
     container_name = "model-files"
     model_dir = "/home/site/wwwroot/model"
     
