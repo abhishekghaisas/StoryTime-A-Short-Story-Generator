@@ -32,7 +32,7 @@ from azure.identity import DefaultAzureCredential
 from azure.storage.blob import BlobServiceClient
 
 try:
-    storage_account_name = 'storygeneratorfiles'
+    storage_account_name = 'napnap'
     container_name = 'model-files'
     
     credential = DefaultAzureCredential()
