@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:8000';
+
 const SelectionPage = ({ themes, genres, setStoryData }) => {
   const [selectedTheme, setSelectedTheme] = useState('');
   const [selectedGenre, setSelectedGenre] = useState('');
@@ -23,18 +25,18 @@ const SelectionPage = ({ themes, genres, setStoryData }) => {
     setError(null);
     
     try {
-      const response = await fetch('http://localhost:8000/generate', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          theme: selectedTheme,
-          genre: selectedGenre,
-          max_length: maxLength,
-          temperature: temperature
-        }),
-      });
+  const response = await fetch(`${API_URL}/generate`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      theme: selectedTheme,
+      genre: selectedGenre,
+      max_length: maxLength,
+      temperature: temperature
+    }),
+  });
       
       if (!response.ok) {
         throw new Error('Failed to generate story');
