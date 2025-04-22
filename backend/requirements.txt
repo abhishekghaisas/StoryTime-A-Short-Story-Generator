@@ -9,3 +9,4 @@ psutil>=5.9.0
 bitsandbytes>=0.39.0
 azure-identity
 azure-storage-blob
+gunicorn>=0.21.1
