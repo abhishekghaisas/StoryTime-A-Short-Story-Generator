@@ -1,4 +1,9 @@
 #!/bin/bash
+set -e
+
+# Download model files
+python /home/site/wwwroot/download_model.py
+
 
 # Download base model if not exists
 if [ ! -d "/home/site/wwwroot/base_model" ]; then
