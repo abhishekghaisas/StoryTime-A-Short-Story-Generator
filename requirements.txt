@@ -7,3 +7,5 @@ accelerate>=0.20.0
 safetensors>=0.3.1
 psutil>=5.9.0
 bitsandbytes>=0.39.0
+azure-identity
+azure-storage-blob
