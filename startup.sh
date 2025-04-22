@@ -4,6 +4,7 @@ set -e
 # Create model directory
 mkdir -p /home/site/wwwroot/model
 
+
 # Download model files from Azure Storage
 echo "Downloading model files..."
 curl -o /home/site/wwwroot/model/adapter_config.json "https://storygeneratorfiles.blob.core.windows.net/model-files/adapter_config.json"
