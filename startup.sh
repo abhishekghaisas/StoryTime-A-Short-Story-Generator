@@ -1,9 +1,9 @@
 #!/bin/bash
 set -e
 
-
-# To this if your app is in the backend directory:
+# Change to working directory
 cd /home/site/wwwroot/
+
 # Create log directory
 mkdir -p /home/site/wwwroot/logs
 
@@ -31,10 +31,10 @@ echo "$(date): Write access confirmed" >> /home/site/wwwroot/logs/startup.log
 echo "$(date): Listing files in container:" >> /home/site/wwwroot/logs/startup.log
 python -c "
 import os
-from azure.identity import DefaultAzureCredential
-from azure.storage.blob import BlobServiceClient
-
 try:
+    from azure.identity import DefaultAzureCredential
+    from azure.storage.blob import BlobServiceClient
+    
     storage_account_name = 'napnap'
     container_name = 'model-files'
     
@@ -49,7 +49,6 @@ try:
     print('Files in container:')
     for blob in container_client.list_blobs():
         print(f' - {blob.name} ({blob.size} bytes)')
-    
 except Exception as e:
     print(f'Error accessing storage: {str(e)}')
 " >> /home/site/wwwroot/logs/startup.log
@@ -89,5 +88,4 @@ echo "$(date): Starting test app to diagnose issues..." >> /home/site/wwwroot/lo
 cd /home/site/wwwroot/
 export MODEL_PATH=/home/site/wwwroot/model
 export TOKENIZERS_PARALLELISM=false
-
 gunicorn --bind=0.0.0.0:8000 --timeout 600 --workers 1 --threads 8 -k uvicorn.workers.UvicornWorker backend:app
