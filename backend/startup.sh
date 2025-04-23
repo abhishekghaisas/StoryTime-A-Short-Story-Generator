@@ -3,32 +3,32 @@ set -e
 
 
 # To this if your app is in the backend directory:
-cd /home/site/wwwroot/backend
+cd /home/site/wwwroot/
 # Create log directory
-mkdir -p /home/site/wwwroot/backend/logs
+mkdir -p /home/site/wwwroot/logs
 
 # Log startup progress
-echo "$(date): Starting application setup..." > /home/site/wwwroot/backend/logs/startup.log
+echo "$(date): Starting application setup..." > /home/site/wwwroot/logs/startup.log
 
 # Create model directory with error handling
-mkdir -p /home/site/wwwroot/backend/model
+mkdir -p /home/site/wwwroot/model
 if [ ! -d "/home/site/wwwroot/model" ]; then
-    echo "$(date): Failed to create model directory" >> /home/site/wwwroot/backend/logs/startup.log
+    echo "$(date): Failed to create model directory" >> /home/site/wwwroot/logs/startup.log
     exit 1
 fi
-echo "$(date): Model directory created" >> /home/site/wwwroot/backend/logs/startup.log
+echo "$(date): Model directory created" >> /home/site/wwwroot/logs/startup.log
 
 # Verify we can write to model directory
 touch /home/site/wwwroot/model/test.txt
 if [ ! -f "/home/site/wwwroot/model/test.txt" ]; then
-    echo "$(date): Cannot write to model directory" >> /home/site/wwwroot/backend/logs/startup.log
+    echo "$(date): Cannot write to model directory" >> /home/site/wwwroot/logs/startup.log
     exit 1
 fi
-rm /home/site/wwwroot/backend/model/test.txt
-echo "$(date): Write access confirmed" >> /home/site/wwwroot/backend/logs/startup.log
+rm /home/site/wwwroot/model/test.txt
+echo "$(date): Write access confirmed" >> /home/site/wwwroot/logs/startup.log
 
 # List container files to verify access
-echo "$(date): Listing files in container:" >> /home/site/wwwroot/backend/logs/startup.log
+echo "$(date): Listing files in container:" >> /home/site/wwwroot/logs/startup.log
 python -c "
 import os
 from azure.identity import DefaultAzureCredential
@@ -52,11 +52,11 @@ try:
     
 except Exception as e:
     print(f'Error accessing storage: {str(e)}')
-" >> /home/site/wwwroot/backend/logs/startup.log
+" >> /home/site/wwwroot/logs/startup.log
 
 # Create a minimal test app to verify basic functionality
-echo "$(date): Creating test app..." >> /home/site/wwwroot/backend/logs/startup.log
-cat > /home/site/wwwroot/backend/test_app.py << 'EOL'
+echo "$(date): Creating test app..." >> /home/site/wwwroot/logs/startup.log
+cat > /home/site/wwwroot/test_app.py << 'EOL'
 from fastapi import FastAPI
 import uvicorn
 import os
@@ -85,9 +85,9 @@ if __name__ == "__main__":
 EOL
 
 # Try running this test app first to diagnose issues
-echo "$(date): Starting test app to diagnose issues..." >> /home/site/wwwroot/backend/logs/startup.log
-cd /home/site/wwwroot/backend
-export MODEL_PATH=/home/site/wwwroot/backend/model
+echo "$(date): Starting test app to diagnose issues..." >> /home/site/wwwroot/logs/startup.log
+cd /home/site/wwwroot/
+export MODEL_PATH=/home/site/wwwroot/model
 export TOKENIZERS_PARALLELISM=false
 
 gunicorn --bind=0.0.0.0:8000 --timeout 600 --workers 1 --threads 8 -k uvicorn.workers.UvicornWorker backend:app
