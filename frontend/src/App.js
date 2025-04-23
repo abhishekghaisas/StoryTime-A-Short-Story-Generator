@@ -4,12 +4,15 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import WelcomePage from './pages/WelcomePage';
 import SelectionPage from './pages/SelectionPage';
 import StoryPage from './pages/StoryPage';
+import SavedStoriesPage from './pages/SavedStoriesPage';
+import SavedStoryViewPage from './pages/SavedStoryViewPage';
 import './App.css';
 
 function App() {
   const [storyData, setStoryData] = useState(null);
   const [themes, setThemes] = useState([]);
   const [genres, setGenres] = useState([]);
+  const [selectedSavedStory, setSelectedSavedStory] = useState(null);
   
   // Fetch available themes and genres when the app loads
   useEffect(() => {
@@ -51,6 +54,14 @@ function App() {
                 <StoryPage storyData={storyData} /> : 
                 <Navigate to="/select" replace />
             } 
+          />
+          <Route 
+            path="/saved-stories" 
+            element={<SavedStoriesPage setSelectedSavedStory={setSelectedSavedStory} />} 
+          />
+          <Route 
+            path="/view-story" 
+            element={<SavedStoryViewPage selectedSavedStory={selectedSavedStory} />} 
           />
         </Routes>
       </div>
