@@ -1,0 +1,63 @@
+name: Deploy Backend to Azure Test
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'backend/**'
+      - 'startup.sh'
+      - '.github/workflows/backend-deploy-simple.yml'
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 0  # Fetch all history
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'  # Using 3.10 for Azure compatibility
+    
+    - name: Debug repository structure
+      run: |
+        echo "Current working directory: $(pwd)"
+        echo "Repository contents:"
+        ls -la
+        echo "Backend directory contents:"
+        ls -la backend || echo "Backend directory not found"
+        echo "Finding requirements.txt files:"
+        find . -name "requirements.txt" -type f
+    
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        
+        # Look for requirements.txt in various locations
+        if [ -f "backend/requirements.txt" ]; then
+          echo "Found requirements.txt in backend directory"
+          pip install -r backend/requirements.txt
+        elif [ -f "requirements.txt" ]; then
+          echo "Found requirements.txt in root directory"
+          pip install -r requirements.txt
+        else
+          REQUIREMENTS_FILE=$(find . -name "requirements.txt" -type f | head -n 1)
+          if [ -n "$REQUIREMENTS_FILE" ]; then
+            echo "Found requirements.txt at: $REQUIREMENTS_FILE"
+            pip install -r "$REQUIREMENTS_FILE"
+          else
+            echo "ERROR: requirements.txt not found anywhere in repository"
+            exit 1
+          fi
+        fi
+    
+    - name: Deploy to Azure Web App
+      uses: azure/webapps-deploy@v2
+      with:
+        app-name: 'napnap'
+        publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+        package: ./
