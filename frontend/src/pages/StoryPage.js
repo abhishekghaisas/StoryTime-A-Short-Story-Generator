@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 const StoryPage = ({ storyData }) => {
+  const [saveStatus, setSaveStatus] = useState('');
+  
   // Generate a title based on theme and genre if not provided in the API response
   const storyTitle = storyData.title || 
     `The ${storyData.theme.charAt(0).toUpperCase() + storyData.theme.slice(1)} ${storyData.genre.charAt(0).toUpperCase() + storyData.genre.slice(1)}`;
@@ -26,6 +28,39 @@ const StoryPage = ({ storyData }) => {
     document.body.removeChild(element);
   };
 
+  // Function to save the story to localStorage
+  const handleSaveStory = () => {
+    try {
+      // Get existing saved stories or initialize empty array
+      const savedStoriesJSON = localStorage.getItem('savedStories');
+      const savedStories = savedStoriesJSON ? JSON.parse(savedStoriesJSON) : [];
+      
+      // Create story object with timestamp
+      const storyToSave = {
+        ...storyData,
+        savedAt: new Date().toISOString()
+      };
+      
+      // Add to saved stories
+      savedStories.push(storyToSave);
+      
+      // Save back to localStorage
+      localStorage.setItem('savedStories', JSON.stringify(savedStories));
+      
+      // Update status
+      setSaveStatus('Story saved successfully!');
+      
+      // Clear status after 3 seconds
+      setTimeout(() => setSaveStatus(''), 3000);
+    } catch (error) {
+      console.error('Error saving story:', error);
+      setSaveStatus('Failed to save story. Please try again.');
+      
+      // Clear error status after 3 seconds
+      setTimeout(() => setSaveStatus(''), 3000);
+    }
+  };
+
   return (
     <div className="container">
       <Link to="/select" className="btn btn-back">
@@ -41,6 +76,12 @@ const StoryPage = ({ storyData }) => {
           <span>Genre: {storyData.genre.charAt(0).toUpperCase() + storyData.genre.slice(1)}</span>
         </div>
         
+        {saveStatus && (
+          <div className={saveStatus.includes('Failed') ? "error-message" : "success-message"}>
+            {saveStatus}
+          </div>
+        )}
+        
         <div className="story-card">
           <h2 className="story-title">{storyTitle}</h2>
           <div className="story-content">
@@ -52,6 +93,9 @@ const StoryPage = ({ storyData }) => {
           <Link to="/select" className="btn btn-secondary">
             Create Another Story
           </Link>
+          <button onClick={handleSaveStory} className="btn">
+            Save Story
+          </button>
           <button onClick={handleDownload} className="btn">
             Download Story
           </button>
