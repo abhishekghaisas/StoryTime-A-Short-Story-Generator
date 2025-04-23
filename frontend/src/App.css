@@ -421,3 +421,81 @@ select.form-control {
     text-align: center;
   }
 }
+
+/* Add these styles to your existing App.css file */
+
+/* Saved Stories Page Styles */
+.saved-stories-container {
+  max-width: 800px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.stories-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.story-list-item {
+  border-left: 5px solid var(--secondary-color);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.story-list-item:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+}
+
+.story-preview {
+  margin: 1rem 0;
+  font-style: italic;
+  color: #555;
+  line-height: 1.6;
+}
+
+.success-message {
+  background-color: #e8f5e9;
+  color: #2e7d32;
+  padding: 0.75rem;
+  border-radius: var(--border-radius);
+  margin-bottom: 1.5rem;
+  text-align: center;
+  font-weight: 600;
+  animation: fadeOut 3s forwards;
+  animation-delay: 2s;
+}
+
+@keyframes fadeOut {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
+
+/* Make the button container more responsive */
+.btn-container {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.btn-container .btn {
+  flex: 1;
+  min-width: 120px;
+  text-align: center;
+}
+
+@media (max-width: 768px) {
+  .btn-container {
+    flex-direction: column;
+  }
+  
+  .story-list-item h2 {
+    font-size: 1.5rem;
+  }
+  
+  .story-preview {
+    font-size: 0.95rem;
+  }
+}
