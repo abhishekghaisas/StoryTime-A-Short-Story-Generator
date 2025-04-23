@@ -1,4 +1,4 @@
-name: Deploy Backend to Azure Web App 2nd
+name: Deploy Backend to Azure Web App
 on:
   push:
     branches:
