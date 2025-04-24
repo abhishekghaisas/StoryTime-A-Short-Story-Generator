@@ -1,16 +1,13 @@
-/* Enhanced App.css with quality indicator styles */
-
 :root {
-  --primary-color: #6a4c93;
-  --secondary-color: #8ac6d1;
-  --accent-color: #ffcb77;
-  --background-color: #f9f7f7;
-  --text-color: #333;
+  --primary-color: #5DADE2;
+  --secondary-color: #7DCEA0;
+  --accent-color: #F4D03F;
+  --background-color: #FFF9E6;
+  --text-color: #424242;
   --light-text: #fff;
   --shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   --border-radius: 12px;
   
-  /* Status colors */
   --excellent-color: #4caf50;
   --good-color: #8bc34a;
   --acceptable-color: #ffc107;
@@ -218,7 +215,6 @@ select.form-control {
   color: #aaa;
 }
 
-/* New quality indicator styles */
 .quality-badge {
   padding: 0.3rem 0.6rem;
   border-radius: 1rem;
@@ -422,9 +418,6 @@ select.form-control {
   }
 }
 
-/* Add these styles to your existing App.css file */
-
-/* Saved Stories Page Styles */
 .saved-stories-container {
   max-width: 800px;
   width: 100%;
@@ -471,7 +464,6 @@ select.form-control {
   to { opacity: 0; }
 }
 
-/* Make the button container more responsive */
 .btn-container {
   display: flex;
   justify-content: space-between;
