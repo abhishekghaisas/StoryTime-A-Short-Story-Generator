@@ -239,6 +239,7 @@ def check_and_correct_title(story_text: str, current_title: str, similarity_thre
     # Heuristic: Use first sentence of the story, clean it up
     first_line = re.split(r'[.!?]', story)[0]
     corrected_title = first_line.strip().capitalize()
+return corrected_title
 
     # Ensure it's not too long
     if len(corrected_title.split()) > 10:
