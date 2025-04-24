@@ -203,3 +203,43 @@ class PostProcessor:
         text = re.sub(r'([.!?]),', r'\1 ', text)
         
         return text.strip()
+    
+from sentence_transformers import SentenceTransformer, util
+import re
+
+model = SentenceTransformer('paraphrase-MiniLM-L6-v2')
+
+def check_and_correct_title(story_text: str, current_title: str, similarity_threshold=0.55) -> str:
+    """
+    Checks whether the title is semantically coherent with the story.
+    If not, generates a corrected title.
+    
+    Args:
+        story_text (str): The generated story.
+        current_title (str): The title to evaluate.
+        similarity_threshold (float): Cosine similarity cutoff below which title is replaced.
+
+    Returns:
+        str: Either the original title (if good) or a new corrected title.
+    """
+    # Preprocess inputs
+    story = story_text.strip().replace('\n', ' ')
+    title = current_title.strip()
+
+    # Calculate embeddings
+    story_embedding = model.encode(story, convert_to_tensor=True)
+    title_embedding = model.encode(title, convert_to_tensor=True)
+
+    similarity = util.cos_sim(story_embedding, title_embedding).item()
+
+    if similarity >= similarity_threshold:
+        return title  # Title is coherent enough
+
+    # If not coherent, generate a new one (basic rule-based for now)
+    # Heuristic: Use first sentence of the story, clean it up
+    first_line = re.split(r'[.!?]', story)[0]
+    corrected_title = first_line.strip().capitalize()
+
+    # Ensure it's not too long
+    if len(corrected_title.split()) > 10:
+        corrected_title = "A short story about " + corrected_title.split()[0].lower()
